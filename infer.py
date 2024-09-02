@@ -3,9 +3,15 @@
 
 import onnxruntime as ort
 import numpy as np
+from utils import pad
+
+
+MAX_LEN = 10000
+PATH = 'nakdimon.onnx'
+
 
 input = np.array([1, 2], dtype=np.float32)
 input = input.reshape(1, -1)
-session = ort.InferenceSession('nakdimon.onnx')
+session = ort.InferenceSession(PATH)
 outputs = session.run(None, {'input_1': input})
 print(outputs)
