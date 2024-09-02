@@ -5,3 +5,4 @@ build/
 *.keras
 *.h5
 *.egg*
+.pytest_cache
