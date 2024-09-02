@@ -23,4 +23,10 @@ def test_diacritics(nakdimon: 'Nakdimon', test_file):
         text = f.read()    
     dotted_text = nakdimon.compute(text)
     
-    assert dotted_text == text, f"Failed for file {test_file.name}. Expected: {text} but got: {dotted_text}"
+    if dotted_text != text:
+        raise AssertionError(
+            f"Failed for file {test_file.name}.\n"
+            f"Expected:\n{text[:1000]}\n...\n"
+            f"But got:\n{dotted_text[:1000]}\n...\n"
+            f"Expected length: {len(text)} characters, Got length: {len(dotted_text)} characters"
+        )
