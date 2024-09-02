@@ -3,7 +3,7 @@
 ## Build
 
 ```console
-python -m pip install --upgrade build
+python -m pip install -U build
 python -m build
 ```
 
@@ -12,7 +12,9 @@ python -m build
 _Get token from https://pypi.org/manage/account/token_
 
 ```console
-python -m pip install --upgrade twine
+python -m pip install -U twine
+
+python -m build
 python -m twine upload --repository testpypi dist/*
 ```
 
