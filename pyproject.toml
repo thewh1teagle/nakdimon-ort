@@ -1,6 +1,7 @@
 [project]
 name = "nakdimon-ort"
 description = "Hebrew diacritics in onnxruntime"
+readme = "README.md"
 version = "0.1.0"
 authors = [
     { name = "thewh1teagle" }
