@@ -28,6 +28,7 @@ jobs:
 
     - name: Download model files
       run: |
+          wget wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/config.json
           wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/nakdimon.onnx
 
     - name: Run tests
