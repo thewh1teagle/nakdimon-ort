@@ -1,4 +1,5 @@
 # pip3 install tensorflow==2.15.0 tf2onnx onnx
+# wget https://github.com/elazarg/nakdimon/blob/master/nakdimon/Nakdimon.h5
 # python main.py Nakdimon.h5
 # Note: model requires special load function so I converted it using nakdimon own functions to load it.
 
