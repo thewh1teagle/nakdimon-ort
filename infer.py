@@ -8,6 +8,7 @@ from utils import pad
 
 MAX_LEN = 10000
 PATH = 'nakdimon.onnx'
+TEXT = "שלום עולם"
 
 
 input = np.array([1, 2], dtype=np.float32)
