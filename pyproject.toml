@@ -20,6 +20,9 @@ dev = [
     "bump2version",
     "pytest"
 ]
+test = [
+    "pytest"
+]
 
 [build-system]
 build-backend = "flit_core.buildapi"
