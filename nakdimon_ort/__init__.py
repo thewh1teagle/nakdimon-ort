@@ -1,10 +1,24 @@
 import json
 import numpy as np
 import onnxruntime as ort
-import time
+from pathlib import Path
 
 class Nakdimon:
     def __init__(self, model_path, config_path):
+        assert Path(model_path).exists(), (
+            f"Configuration file not found: {config_path}\n"
+            "Please download the Nakdimon model before executing.\n"
+            "You can download it using the following command:\n"
+            "wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/nakdimon.onnx"
+        )
+
+        assert Path(config_path).exists(), (
+            f"Configuration file not found: {config_path}\n"
+            "Please download the Nakdimon configuration file before executing.\n"
+            "You can download it using the following command:\n"
+            "wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/config.json"
+        )
+
         with open(config_path, 'r', encoding='utf-8') as f:
             self.config = json.load(f)
         
@@ -87,10 +101,3 @@ class Nakdimon:
         return self.update_dotted(res)
 
 
-if __name__ == '__main__':
-    nakdimon = Nakdimon("nakdimon.onnx", "config.json")
-    text = 'שלום עולם!'
-    start_t = time.time()
-    dotted_text = nakdimon.compute(text)
-    print(dotted_text)
-    print(f'Took {time.time() - start_t:.1} seconds.')

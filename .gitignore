@@ -1,4 +1,7 @@
 venv/
+__pycache__/
+build/
 *.onnx
 *.keras
 *.h5
+*.egg*

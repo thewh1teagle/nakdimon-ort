@@ -1,0 +1,25 @@
+[project]
+name = "nakdimon-ort"
+description = "Hebrew diacritics in onnxruntime"
+version = "0.1.0"
+authors = [
+    { name = "thewh1teagle" }
+]
+dependencies = [
+    "onnxruntime>=1.0",
+]
+
+[project.urls]
+home = "https://github.com/thewh1teagle/nakdimon-ort"
+
+[project.optional-dependencies]
+dev = [
+    "tox",
+    "pre-commit",
+    "bump2version",
+    "pytest"
+]
+
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.2,<4"]
