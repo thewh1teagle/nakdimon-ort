@@ -10,7 +10,8 @@ from nakdimon_ort import Nakdimon
 # Define a fixture to initialize Nakdimon
 @pytest.fixture(scope="module")
 def nakdimon():
-    return Nakdimon('nakdimon.onnx', 'config.json')
+    config_path = Path(__file__).parent / '../assets/config.json'
+    return Nakdimon('nakdimon.onnx', config_path)
 
 # Function to get all test files
 def get_test_files():
