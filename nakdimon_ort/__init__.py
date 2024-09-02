@@ -83,7 +83,7 @@ class Nakdimon:
         return output
 
     def remove_niqqud(self, text):
-        return ''.join([c for c in text if c not in '\u0591-\u05C7'])
+        return ''.join([c for c in text if not ('\u0591' <= c <= '\u05C7')])
 
     def to_text(self, item):
         c = '\r\n' if item['char'] == '\n' else item['char']
