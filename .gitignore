@@ -6,3 +6,4 @@ build/
 *.h5
 *.egg*
 .pytest_cache
+dist/
