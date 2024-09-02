@@ -26,6 +26,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install .[dev]
 
+    - name: Download model files
+      run: |
+          wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/nakdimon.onnx
+          wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/config.json
+
     - name: Run tests
       run: |
         pytest .
