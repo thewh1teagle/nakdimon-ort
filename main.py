@@ -15,32 +15,19 @@ class Nakdimon:
         self.HEBREW_LETTERS = self.config['HEBREW']
         self.VALID_LETTERS = self.config['VALID'] + self.HEBREW_LETTERS
         self.SPECIAL_TOKENS = self.config['SPECIAL']
+        self.NORMALIZE_MAP = self.config['normalize_map']
+        self.NORMALIZE_DEFAULT_VALUE = self.NORMALIZE_MAP['DEFAULT']
+        self.CAN_DAGESH = self.config['can_dagesh']
+        self.CAN_SIN = self.config['can_sin']
+        self.CAN_NIQQUD = self.config['can_niqqud']
         self.ALL_TOKENS = [''] + self.SPECIAL_TOKENS + self.VALID_LETTERS
         self.MAXLEN = self.config['MAXLEN']
         self.session = ort.InferenceSession(model_path)
 
     def normalize(self, c):
-        if c in '\n\t':
-            return ' '
         if c in self.VALID_LETTERS:
             return c
-        if c in '־‒–—―−':
-            return '-'
-        if c == '[':
-            return '('
-        if c == ']':
-            return ')'
-        if c in '´‘’':
-            return "'"
-        if c in '“”״':
-            return '"'
-        if c in '0123456789':
-            return '5'
-        if c == '…':
-            return ','
-        if c in 'ײװױ':
-            return 'H'
-        return 'O'
+        return self.NORMALIZE_MAP.get(c, self.NORMALIZE_DEFAULT_VALUE)
 
     def split_to_rows(self, text):
         space = self.ALL_TOKENS.index(" ")
@@ -59,15 +46,6 @@ class Nakdimon:
         rows.append(line)
         return np.array(rows)
 
-    def can_dagesh(self, letter):
-        return letter in 'בגדהוזטיכלמנספצקשת' + 'ךף'
-
-    def can_sin(self, letter):
-        return letter == 'ש'
-
-    def can_niqqud(self, letter):
-        return letter in 'אבגדהוזחטיכלמנסעפצקרשת' + 'ךן'
-
     def from_categorical(self, arr):
         return np.argmax(arr, axis=-1).flatten()
 
@@ -81,11 +59,11 @@ class Nakdimon:
         for i, c in enumerate(undotted_text):
             fresh = {'char': c, 'niqqud': '', 'dagesh': '', 'sin': ''}
             if c in self.HEBREW_LETTERS:
-                if self.can_niqqud(c):
+                if c in self.CAN_NIQQUD:
                     fresh['niqqud'] = self.niqqud[niqqud_result[i]]
-                if self.can_dagesh(c):
+                if c in self.CAN_DAGESH:
                     fresh['dagesh'] = self.dagesh[dagesh_result[i]]
-                if self.can_sin(c):
+                if c in self.CAN_SIN:
                     fresh['sin'] = self.sin[sin_result[i]]
             output.append(fresh)
         return output
