@@ -35,6 +35,7 @@ class Nakdimon:
         self.CAN_SIN = self.config['can_sin']
         self.CAN_NIQQUD = self.config['can_niqqud']
         self.ALL_TOKENS = [''] + self.SPECIAL_TOKENS + self.VALID_LETTERS
+        self.REMOVE_NIQQUD_RANGE = self.config['remove_niqqud_range']
         self.MAXLEN = self.config['MAXLEN']
         self.session = ort.InferenceSession(model_path)
 
@@ -83,10 +84,10 @@ class Nakdimon:
         return output
 
     def remove_niqqud(self, text):
-        return ''.join([c for c in text if not ('\u0591' <= c <= '\u05C7')])
+        return ''.join([c for c in text if not (self.REMOVE_NIQQUD_RANGE[0] <= c <= self.REMOVE_NIQQUD_RANGE[1])])
 
     def to_text(self, item):
-        c = '\r\n' if item['char'] == '\n' else item['char']
+        c = item['char']
         return c + (item['dagesh'] or '') + (item['sin'] or '') + (item['niqqud'] or '')
 
     def update_dotted(self, items):

@@ -90,7 +90,7 @@
         "ײװױ": "H",
         "DEFAULT": "O"
     },
-    "remove_niqqud_range": "\u0591-\u05C7",
+    "remove_niqqud_range": ["\u0591", "\u05C7"],
     "can_dagesh": "בגדהוזטיכלמנספצקשתךף",
     "can_sin": "ש",
     "can_niqqud": "אבגדהוזחטיכלמנסעפצקרשתךן"
