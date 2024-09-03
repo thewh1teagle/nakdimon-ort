@@ -49,20 +49,23 @@ class Nakdimon:
     def normalize(self, c):
         return self.NORMALIZE_MAP.get(c, self.NORMALIZE_DEFAULT_VALUE) if c not in self.VALID_LETTERS else c
 
-    def split_to_matrix(self, text):
-        space_id = self.ALL_TOKENS.index(" ")  # Index of the space character in tokens
-        word_ids_matrix = [[self.ALL_TOKENS.index(c) for c in word] for word in text.split(" ")]  # Convert text to token IDs
-        matrix, cur_row = [], []
-        for word_ids in word_ids_matrix:
+    def split_to_rows(self, text):
+        
+        word_ids_rows = [[self.ALL_TOKENS.index(c) for c in word] for word in text.split(" ")]  # Convert text to token IDs
+        rows, cur_row = [], []
+        
+        for word_ids in word_ids_rows:
             # Check if adding the word exceeds the max length
             if len(cur_row) + len(word_ids) + 1 > self.MAXLEN:
-                matrix.append(cur_row + [0] * (self.MAXLEN - len(cur_row)))  # Pad and save the current row
+                padding = [0] * (self.MAXLEN - len(cur_row))
+                rows.append(cur_row + padding)  # Pad and save the current row
                 cur_row = []
-            cur_row.extend(word_ids + [space_id])  # Add the word and space to the current row
+            
+            cur_row.extend(word_ids + [self.ALL_TOKENS.index(" ")])  # Add the word and space to the current row
 
         # Final padding and appending of the last row
-        matrix.append(cur_row + [0] * (self.MAXLEN - len(cur_row)))
-        return matrix
+        rows.append(cur_row + [0] * (self.MAXLEN - len(cur_row)))
+        return rows
 
     def from_categorical(self, arr):
         return np.argmax(arr, axis=-1).flatten()
@@ -99,7 +102,7 @@ class Nakdimon:
     def compute(self, text):
         undotted = self.remove_niqqud(text)
         normalized = ''.join(map(self.normalize, undotted))
-        input = self.split_to_matrix(normalized)
+        input = self.split_to_rows(normalized)
         input_tensor = np.array(input, dtype=np.float32)
         prediction = self.session.run(None, {"input_1": input_tensor})
         res = self.prediction_to_text(input, prediction, undotted)
