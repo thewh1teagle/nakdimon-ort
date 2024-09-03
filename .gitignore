@@ -8,3 +8,4 @@ build/
 .pytest_cache
 dist/
 examples/*.txt
+examples/config.json
