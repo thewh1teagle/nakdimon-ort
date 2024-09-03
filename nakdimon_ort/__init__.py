@@ -51,10 +51,8 @@ class Nakdimon:
 
     def split_to_rows(self, text):
         space_id = self.ALL_TOKENS.index(" ")  # Index of the space character in tokens
-        word_ids_matrix = [[self.ALL_TOKENS.index(c) for c in word] for word in text.split()]  # Convert text to token IDs
-        
+        word_ids_matrix = [[self.ALL_TOKENS.index(c) for c in word] for word in text.split(" ")]  # Convert text to token IDs
         rows, cur_row = [], []
-
         for word_ids in word_ids_matrix:
             # Check if adding the word exceeds the max length
             if len(cur_row) + len(word_ids) + 1 > self.MAXLEN:
@@ -64,7 +62,7 @@ class Nakdimon:
 
         # Final padding and appending of the last row
         rows.append(cur_row + [0] * (self.MAXLEN - len(cur_row)))
-        return np.array(rows)
+        return np.array(rows, dtype=np.float32)
 
     def from_categorical(self, arr):
         return np.argmax(arr, axis=-1).flatten()
@@ -100,8 +98,7 @@ class Nakdimon:
     def compute(self, text):
         undotted = self.remove_niqqud(text)
         normalized = ''.join(map(self.normalize, undotted))
-        input_matrix = self.split_to_rows(normalized)
-        input_tensor = np.array(input_matrix, dtype=np.float32)
+        input_tensor = self.split_to_rows(normalized)
         prediction = self.session.run(None, {"input_1": input_tensor})
         res = self.prediction_to_text(prediction, undotted)
         return self.update_dotted(res)
