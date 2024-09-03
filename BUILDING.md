@@ -9,7 +9,7 @@ python -m build
 
 ## Publish
 
-*Get token from https://pypi.org/manage/account/token/ *
+_Get token from https://pypi.org/manage/account/token/ _
 
 ```console
 python -m pip install -U twine
