@@ -5,6 +5,26 @@ from pathlib import Path
 
 class Nakdimon:
     def __init__(self, model_path, config_path):
+        self.config = self.load_config(model_path, config_path)
+        
+        self.RAFE = self.config['RAFE']
+        self.niqqud = self.config['niqqud']
+        self.dagesh = self.config['dagesh']
+        self.sin = self.config['sin']
+        self.HEBREW_LETTERS = self.config['HEBREW']
+        self.VALID_LETTERS = self.config['VALID'] + self.HEBREW_LETTERS
+        self.SPECIAL_TOKENS = self.config['SPECIAL']
+        self.NORMALIZE_MAP = self.config['normalize_map']
+        self.NORMALIZE_DEFAULT_VALUE = self.NORMALIZE_MAP['DEFAULT']
+        self.CAN_DAGESH = self.config['can_dagesh']
+        self.CAN_SIN = self.config['can_sin']
+        self.CAN_NIQQUD = self.config['can_niqqud']
+        self.ALL_TOKENS = [''] + self.SPECIAL_TOKENS + self.VALID_LETTERS
+        self.REMOVE_NIQQUD_RANGE = self.config['remove_niqqud_range']
+        self.MAXLEN = self.config['MAXLEN']
+        self.session = ort.InferenceSession(model_path)
+
+    def load_config(self, model_path, config_path):
         if not Path(config_path).exists() and Path('assets/config.json').exists():
             # Just make development a bit better
             config_path = 'assets/config.json'
@@ -24,24 +44,7 @@ class Nakdimon:
         )
 
         with open(config_path, 'r', encoding='utf-8') as f:
-            self.config = json.load(f)
-        
-        self.RAFE = self.config['RAFE']
-        self.niqqud = self.config['niqqud']
-        self.dagesh = self.config['dagesh']
-        self.sin = self.config['sin']
-        self.HEBREW_LETTERS = self.config['HEBREW']
-        self.VALID_LETTERS = self.config['VALID'] + self.HEBREW_LETTERS
-        self.SPECIAL_TOKENS = self.config['SPECIAL']
-        self.NORMALIZE_MAP = self.config['normalize_map']
-        self.NORMALIZE_DEFAULT_VALUE = self.NORMALIZE_MAP['DEFAULT']
-        self.CAN_DAGESH = self.config['can_dagesh']
-        self.CAN_SIN = self.config['can_sin']
-        self.CAN_NIQQUD = self.config['can_niqqud']
-        self.ALL_TOKENS = [''] + self.SPECIAL_TOKENS + self.VALID_LETTERS
-        self.REMOVE_NIQQUD_RANGE = self.config['remove_niqqud_range']
-        self.MAXLEN = self.config['MAXLEN']
-        self.session = ort.InferenceSession(model_path)
+            return json.load(f)
 
     def normalize(self, c):
         if c in self.VALID_LETTERS:
@@ -49,20 +52,20 @@ class Nakdimon:
         return self.NORMALIZE_MAP.get(c, self.NORMALIZE_DEFAULT_VALUE)
 
     def split_to_rows(self, text):
-        space = self.ALL_TOKENS.index(" ")
-        arr = [[self.ALL_TOKENS.index(c) for c in s] for s in text.split(" ")]
-        rows = []
-        line = []
-        for tokens in arr:
-            if len(tokens) + len(line) + 1 > self.MAXLEN:
-                while len(line) < self.MAXLEN:
-                    line.append(0)
-                rows.append(line)
-                line = []
-            line.extend(tokens + [space])
-        while len(line) < self.MAXLEN:
-            line.append(0)
-        rows.append(line)
+        space_id = self.ALL_TOKENS.index(" ")  # Index of the space character in tokens
+        word_ids_matrix = [[self.ALL_TOKENS.index(c) for c in word] for word in text.split()]  # Convert text to token IDs
+        
+        rows, cur_row = [], []
+
+        for word_ids in word_ids_matrix:
+            # Check if adding the word exceeds the max length
+            if len(cur_row) + len(word_ids) + 1 > self.MAXLEN:
+                rows.append(cur_row + [0] * (self.MAXLEN - len(cur_row)))  # Pad and save the current row
+                cur_row = []
+            cur_row.extend(word_ids + [space_id])  # Add the word and space to the current row
+
+        # Final padding and appending of the last row
+        rows.append(cur_row + [0] * (self.MAXLEN - len(cur_row)))
         return np.array(rows)
 
     def from_categorical(self, arr):
