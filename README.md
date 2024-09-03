@@ -8,7 +8,7 @@
 pip install nakdimon-ort
 ```
 
-Please see examples. you also need `nakdimon.onnx` and `config.json` files.
+You also need `nakdimon.onnx` and `config.json` files. Please see examples. 
 
 ## Examples
 
