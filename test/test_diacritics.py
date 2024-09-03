@@ -2,6 +2,7 @@
 pip install .[dev]
 pytest .
 See https://removenikud.dicta.org.il/
+See https://www.nakdimon.org/
 """
 import pytest
 from pathlib import Path
