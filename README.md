@@ -1,6 +1,6 @@
 # nakdimon-ort
 
-[Nakdimon](https://github.com/elazarg/nakdimon) diacritizer with onnxruntime
+[nakdimon](https://github.com/elazarg/nakdimon) diacritizer with onnxruntime
 
 ## Setup
 
