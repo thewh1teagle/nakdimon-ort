@@ -13,3 +13,7 @@ You also need [`nakdimon.onnx`](https://github.com/thewh1teagle/nakdimon-ort/rel
 ## Examples
 
 See [examples](examples)
+
+## Credits
+
+Thanks for [elazarg](https://github.com/elazarg) for creating [nakdimon](https://github.com/elazarg/nakdimon) model!
