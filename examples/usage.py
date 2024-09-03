@@ -9,6 +9,6 @@ python usage.py
 from nakdimon_ort import Nakdimon
 
 nakdimon = Nakdimon("nakdimon.onnx", "config.json")
-text = 'שלום עולם!'
+text = "שלום עולם!"
 dotted_text = nakdimon.compute(text)
 print(dotted_text)

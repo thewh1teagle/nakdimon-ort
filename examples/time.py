@@ -10,8 +10,8 @@ from nakdimon_ort import Nakdimon
 import time
 
 nakdimon = Nakdimon("nakdimon.onnx", "config.json")
-text = 'שלום עולם!'
+text = "שלום עולם!"
 start_t = time.time()
 dotted_text = nakdimon.compute(text)
 print(dotted_text)
-print(f'Took {time.time() - start_t:.1} seconds.')
+print(f"Took {time.time() - start_t:.1} seconds.")

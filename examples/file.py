@@ -13,7 +13,7 @@ input = sys.argv[1]
 output = sys.argv[2]
 
 nakdimon = Nakdimon("nakdimon.onnx", "config.json")
-text = open(input, 'r', encoding='utf-8').read()
+text = open(input, "r", encoding="utf-8").read()
 dotted_text = nakdimon.compute(text)
-with open(output, 'w', encoding='utf-8') as f:
+with open(output, "w", encoding="utf-8") as f:
     f.write(dotted_text)
