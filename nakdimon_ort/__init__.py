@@ -5,6 +5,10 @@ from pathlib import Path
 
 class Nakdimon:
     def __init__(self, model_path, config_path):
+        if not Path(config_path).exists() and Path('assets/config.json').exists():
+            # Just make development a bit better
+            config_path = 'assets/config.json'
+
         assert Path(model_path).exists(), (
             f"Configuration file not found: {config_path}\n"
             "Please download the Nakdimon model before executing.\n"
