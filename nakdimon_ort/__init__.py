@@ -20,7 +20,7 @@ class Nakdimon:
             f"Configuration file not found: {config_path}\n"
             "Please download the Nakdimon configuration file before executing.\n"
             "You can download it using the following command:\n"
-            "wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/config.json"
+            "wget https://github.com/thewh1teagle/nakdimon-ort/raw/main/assets/config.json"
         )
 
         with open(config_path, 'r', encoding='utf-8') as f:
