@@ -6,6 +6,8 @@ See https://removenikud.dicta.org.il/
 import pytest
 from pathlib import Path
 from nakdimon_ort import Nakdimon
+import difflib
+
 
 # Define a fixture to initialize Nakdimon
 @pytest.fixture(scope="module")
@@ -25,9 +27,17 @@ def test_diacritics(nakdimon: 'Nakdimon', test_file):
     dotted_text = nakdimon.compute(text)
     
     if dotted_text != text:
+        diff = difflib.unified_diff(
+            text.splitlines(),
+            dotted_text.splitlines(),
+            fromfile='Expected',
+            tofile='Got',
+            lineterm=''
+        )
+        diff_output = '\n'.join(diff)
+        
         raise AssertionError(
             f"Failed for file {test_file.name}.\n"
-            f"Expected:\n{text[:1000]}\n...\n"
-            f"But got:\n{dotted_text[:1000]}\n...\n"
-            f"Expected length: {len(text)} characters, Got length: {len(dotted_text)} characters"
+            f"Expected length: {len(text)} characters, Got length: {len(dotted_text)} characters\n"
+            f"Diff:\n{diff_output}"
         )
