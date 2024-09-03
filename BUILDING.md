@@ -26,3 +26,9 @@ _Add `--repository testpypi` to upload to test repository_
 pip install .[dev]
 pytest -s .
 ```
+
+## Debugging
+
+Use [delta](https://github.com/dandavison/delta)
+
+delta input.txt output.txt
