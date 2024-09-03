@@ -47,9 +47,7 @@ class Nakdimon:
             return json.load(f)
 
     def normalize(self, c):
-        if c in self.VALID_LETTERS:
-            return c
-        return self.NORMALIZE_MAP.get(c, self.NORMALIZE_DEFAULT_VALUE)
+        return self.NORMALIZE_MAP.get(c, self.NORMALIZE_DEFAULT_VALUE) if c not in self.VALID_LETTERS else c
 
     def split_to_rows(self, text):
         space_id = self.ALL_TOKENS.index(" ")  # Index of the space character in tokens
@@ -94,18 +92,18 @@ class Nakdimon:
         return ''.join([c for c in text if not (self.REMOVE_NIQQUD_RANGE[0] <= c <= self.REMOVE_NIQQUD_RANGE[1])])
 
     def to_text(self, item):
-        c = item['char']
-        return c + (item['dagesh'] or '') + (item['sin'] or '') + (item['niqqud'] or '')
+        return item['char'] + (item['dagesh'] or '') + (item['sin'] or '') + (item['niqqud'] or '')
 
     def update_dotted(self, items):
         return ''.join([self.to_text(item) for item in items])
 
     def compute(self, text):
-        undotted_text = self.remove_niqqud(text)
-        input_data = self.split_to_rows(''.join(map(self.normalize, undotted_text)))
-        input_tensor = np.array(input_data, dtype=np.float32)
+        undotted = self.remove_niqqud(text)
+        normalized = ''.join(map(self.normalize, undotted))
+        input_matrix = self.split_to_rows(normalized)
+        input_tensor = np.array(input_matrix, dtype=np.float32)
         prediction = self.session.run(None, {"input_1": input_tensor})
-        res = self.prediction_to_text(prediction, undotted_text)
+        res = self.prediction_to_text(prediction, undotted)
         return self.update_dotted(res)
 
 
