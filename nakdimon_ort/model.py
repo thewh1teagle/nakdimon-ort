@@ -1,10 +1,10 @@
 import numpy as np
 import onnxruntime as ort
-from .config import load_config
+from .config import load_config, DEFAULT_CONFIG_PATH
 
 
 class Nakdimon:
-    def __init__(self, model_path, config_path):
+    def __init__(self, model_path, config_path=DEFAULT_CONFIG_PATH):
         self.config = load_config(model_path, config_path)
         self.rafe = self.config["rafe"]
         self.niqqud = self.config["niqqud"]

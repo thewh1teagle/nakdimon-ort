@@ -5,36 +5,35 @@ on:
     branches:
       - main
     paths:
-      - 'nakdimon_ort/**'
-      - 'test/**'
-      - 'assets/**'
-      - '.github/workflows/test.yml'
+      - "nakdimon_ort/**"
+      - "test/**"
+      - "assets/**"
+      - ".github/workflows/test.yml"
   pull_request:
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install .[test]
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[test]
 
-    - name: Download model files
-      run: |
-          wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/config.json
+      - name: Download model files
+        run: |
           wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/nakdimon.onnx
 
-    - name: Run tests
-      run: |
-        pytest .
+      - name: Run tests
+        run: |
+          pytest .
