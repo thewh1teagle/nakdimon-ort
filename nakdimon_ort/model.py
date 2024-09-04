@@ -50,14 +50,14 @@ class Nakdimon:
         rows.append(cur_row + [0] * (self.max_len - len(cur_row)))
         return rows
 
-    def from_categorical(self, arr):
-        return np.argmax(arr, axis=-1).flatten()
+    def prediction_to_text(self, input_tensor, prediction, undotted_text):
+        def from_categorical(arr):
+            return np.argmax(arr[input_tensor > 0], axis=-1).flatten()
 
-    def prediction_to_text(self, input, prediction, undotted_text):
         niqqud, dagesh, sin = prediction
-        niqqud_result = self.from_categorical(niqqud)
-        dagesh_result = self.from_categorical(dagesh)
-        sin_result = self.from_categorical(sin)
+        niqqud_result = from_categorical(niqqud)
+        dagesh_result = from_categorical(dagesh)
+        sin_result = from_categorical(sin)
         output = []
         for i, c in enumerate(undotted_text):
             fresh = {"char": c, "niqqud": "", "dagesh": "", "sin": ""}
@@ -97,5 +97,5 @@ class Nakdimon:
         input = self.split_to_rows(normalized)
         input_tensor = np.array(input, dtype=np.float32)
         prediction = self.session.run(None, {"input_1": input_tensor})
-        res = self.prediction_to_text(input, prediction, undotted)
+        res = self.prediction_to_text(input_tensor, prediction, undotted)
         return self.update_dotted(res)
