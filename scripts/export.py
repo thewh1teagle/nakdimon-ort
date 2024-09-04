@@ -13,6 +13,6 @@ import sys
 path = sys.argv[1]
 model = load_model(path)
 
-print('model loaded')
-onnx_model, _ = tf2onnx.convert.from_keras(model, ustom_objects={'loss': None})
-onnx.save(onnx_model, 'nakdimon.onnx')
+print("model loaded")
+onnx_model, _ = tf2onnx.convert.from_keras(model, ustom_objects={"loss": None})
+onnx.save(onnx_model, "nakdimon.onnx")
