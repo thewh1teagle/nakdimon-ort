@@ -23,7 +23,7 @@ _Add `--repository testpypi` to upload to test repository_
 ## Test
 
 ```console
-pip install .[dev]
+pip install '.[dev]'
 pytest -s .
 ```
 

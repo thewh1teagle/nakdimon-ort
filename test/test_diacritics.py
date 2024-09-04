@@ -1,5 +1,5 @@
 """
-pip install .[dev]
+pip install '.[dev]'
 pytest .
 See https://removenikud.dicta.org.il/
 See https://www.nakdimon.org/
