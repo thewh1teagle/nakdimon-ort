@@ -6,7 +6,7 @@ DEFAULT_CONFIG_PATH = Path(__file__).parent / "config.json"
 
 def load_config(model_path, config_path=Path(__file__).parent / "config.json"):
     assert Path(model_path).exists(), (
-        f"Configuration file not found: {config_path}\n"
+        f"Model file not found: {model_path}\n"
         "Please download the Nakdimon model before executing.\n"
         "You can download it using the following command:\n"
         "wget https://github.com/thewh1teagle/nakdimon-ort/releases/download/v0.1.0/nakdimon.onnx"
