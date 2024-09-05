@@ -9,3 +9,4 @@ build/
 dist/
 examples/*.txt
 examples/config.json
+target/
