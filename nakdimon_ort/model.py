@@ -3,8 +3,9 @@ import onnxruntime as ort
 from .config import Config
 from pathlib import Path
 
+
 class Nakdimon:
-    def __init__(self, model_path, config_path = Path(__file__).parent / "config.json"):
+    def __init__(self, model_path, config_path=Path(__file__).parent / "config.json"):
         self.config = Config(model_path, config_path)
         self.session = ort.InferenceSession(model_path)
 
@@ -62,7 +63,11 @@ class Nakdimon:
             [
                 c
                 for c in text
-                if not (self.config.remove_niqqud_range[0] <= c <= self.config.remove_niqqud_range[1])
+                if not (
+                    self.config.remove_niqqud_range[0]
+                    <= c
+                    <= self.config.remove_niqqud_range[1]
+                )
             ]
         )
 
